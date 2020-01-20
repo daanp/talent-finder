@@ -3,10 +3,6 @@ var router = express.Router();
 
 var candidates = [];
 
-/* GET candidates listing. */
-router.get('/', function (req, res, next) {
-    res.send(candidates);
-});
 
 router.get('/search', function (req, res, next) {
     if (!req.query.skills) {
@@ -36,8 +32,15 @@ router.get('/search', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    candidates.push(req.body);
-    res.sendStatus(200);
-})
+    if (!req.body ||
+        !req.body.id ||
+        !req.body.name ||
+        !req.body.skills) {
+        res.sendStatus(400);
+    } else {
+        candidates.push(req.body);
+        res.sendStatus(200);
+    }
+});
 
 module.exports = router;
